@@ -1,0 +1,50 @@
+---
+version: "2.1"
+services:
+
+  nodejs:
+    image: node:14-bullseye
+    container_name: node14
+    hostname: node14
+    restart: always
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t    
+    user: node
+    working_dir: /scripts
+
+    # command: npm run dev
+
+
+    volumes:
+      # - ".:/scripts"
+      - "./:/scripts"
+      # - "/media/data/shared_folders/lfs2:/lfs"
+      # - "/media/data/shared_folders:/shared_folders"
+      # - "~/.ssh:/home/lfs/.ssh"
+      # - "/media/data/project_my:/project_my"
+
+    ports:
+      - 3000:3000
+      - 5000:5000
+      - 8081:8081
+      
+  db:
+    container_name: pg_container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
